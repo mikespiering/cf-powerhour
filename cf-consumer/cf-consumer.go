@@ -3,20 +3,29 @@ package main
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
+	"github.com/go-martini/martini"
 	"github.com/streadway/amqp"
+
+	cfenv "github.com/cloudfoundry-community/go-cfenv"
 )
 
 func failOnError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-		panic(fmt.Sprintf("%s: %s", msg, err))
+		log.Panicf("%s: %s", msg, err)
 	}
 }
 
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@172.17.0.4:5672/")
+	appEnv, _ := cfenv.Current()
+	services, err := appEnv.Services.WithTag("rabbitmq")
+	failOnError(err, "Unable to find bound CloudAMQP instance")
+
+	rabbitmq := services[0]
+	rabbitmqURI := rabbitmq.Credentials["uri"]
+	conn, err := amqp.Dial(rabbitmqURI)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
@@ -52,16 +61,21 @@ func main() {
 	)
 	failOnError(err, "Failed to register a consumer")
 
-	forever := make(chan bool)
-
+	// start the work
+	totalproc := 0
 	go func() {
 		for d := range msgs {
-			log.Printf("Received a message: %s", d.Body)
+			fmt.Printf("Received a message: %s\n", d.Body)
 			d.Ack(false)
 			time.Sleep(100 * time.Millisecond)
+			totalproc++
 		}
 	}()
 
-	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
-	<-forever
+	m := martini.Classic()
+	m.Get("/", func(params martini.Params) string {
+		return fmt.Sprintf("<html><body><h1>Index: %d</h1><hr /><h3>Total Messages Consumed: %d</h3></body></html>", appEnv.Index, totalproc)
+	})
+
+	m.Run()
 }
