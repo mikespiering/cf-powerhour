@@ -1,20 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"os"
+	"github.com/go-martini/martini"
+	"github.com/martini-contrib/render"
 )
 
 func main() {
-	http.HandleFunc("/", hello)
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
-	if err != nil {
-		log.Fatal("ListenAndServe:", err)
-	}
-}
+	m := martini.Classic()
+	m.Use(render.Renderer())
 
-func hello(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(w, "hello, world!")
+	m.Get("/", func(r render.Render) {
+		r.HTML(200, "hello", "world")
+	})
+
+	m.Run()
 }
