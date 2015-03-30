@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/tracyde/powerhour/cf-consumer",
+	"ImportPath": "github.com/tracyde/cf-powerhour/cf-consumer",
 	"GoVersion": "go1.2.2",
 	"Deps": [
 		{
