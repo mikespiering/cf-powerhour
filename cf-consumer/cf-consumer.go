@@ -6,10 +6,16 @@ import (
 	"time"
 
 	"github.com/go-martini/martini"
+	"github.com/martini-contrib/render"
 	"github.com/streadway/amqp"
 
 	cfenv "github.com/cloudfoundry-community/go-cfenv"
 )
+
+type Status struct {
+	InstanceProcessed int
+	InstanceIndex     int
+}
 
 func failOnError(err error, msg string) {
 	if err != nil {
@@ -61,19 +67,23 @@ func main() {
 	failOnError(err, "Failed to register a consumer")
 
 	// start the work
-	totalproc := 0
+	status := Status{}
+	status.InstanceIndex = appEnv.Index
 	go func() {
 		for d := range msgs {
 			fmt.Printf("Received a message: %s\n", d.Body)
 			d.Ack(false)
 			time.Sleep(100 * time.Millisecond)
-			totalproc++
+			status.InstanceProcessed++
 		}
 	}()
 
 	m := martini.Classic()
-	m.Get("/", func(params martini.Params) string {
-		return fmt.Sprintf("<html><body><h1>Index: %d</h1><hr /><h3>Total Messages Consumed: %d</h3></body></html>", appEnv.Index, totalproc)
+	// render html templates from templates directory
+	m.Use(render.Renderer())
+
+	m.Get("/", func(r render.Render) {
+		r.HTML(200, "status", status)
 	})
 
 	m.Run()
