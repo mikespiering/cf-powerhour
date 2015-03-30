@@ -15,6 +15,33 @@
     <h1>CF Consumer Status Page</h1>
     <p><a class="btn btn-primary btn-lg" href="https://github.com/tracyde/cf-powerhour">Learn More &raquo;</a></p> 
   </div>
+
+{{if .AMQP}}
+{{else}}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Unable to connect to CloudAMQP service
+      </div>
+    </div>
+  </div>
+{{end}}
+
+{{if .REDIS}}
+{{else}}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Unable to connect to Redis service
+      </div>
+    </div>
+  </div>
+{{end}}
+
   <div class="row">
     <div class="col-sm-6">
       <h3>Instance</h3>
@@ -32,6 +59,7 @@
       </ul>
     </div>
   </div>
+
 </div>
 
 </body>
