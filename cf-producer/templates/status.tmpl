@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CF Producer</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="jumbotron">
+    <h1>CF Producer Status Page</h1>
+    <p><a class="btn btn-primary btn-lg" href="https://github.com/tracyde/cf-powerhour">Learn More &raquo;</a></p> 
+  </div>
+
+{{if .AMQP}}
+{{else}}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Unable to connect to CloudAMQP service
+      </div>
+    </div>
+  </div>
+{{end}}
+
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Instance</h3>
+      <ul class="list-group">
+        <li class="list-group-item"><span class="badge">{{.InstanceIndex}}</span> Index</li>
+        <li class="list-group-item"><span class="badge">{{.InstanceProcessed}}</span> Processed</li>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <h3>Application</h3>
+      <ul class="list-group">
+        <li class="list-group-item"><span class="badge">12</span> New</li>
+        <li class="list-group-item"><span class="badge">5</span> Deleted</li>
+        <li class="list-group-item"><span class="badge">3</span> Warnings</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
+
