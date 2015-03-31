@@ -96,6 +96,7 @@ func main() {
 				status.InstanceProcessed++
 				if status.REDIS {
 					status.TotalProcessed, _ = client.Incr("totalProcessed")
+					_, _ = client.Expire("totalProcessed", 300)
 				}
 			}
 		}()
