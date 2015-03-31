@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/tracyde/cf-powerhour/cf-consumer",
+	"ImportPath": "github.com/tracyde/powerhour/cf-consumer",
 	"GoVersion": "go1.2.2",
 	"Deps": [
 		{
@@ -16,6 +16,10 @@
 			"ImportPath": "github.com/go-martini/martini",
 			"Comment": "v1.0-117-g2047b73",
 			"Rev": "2047b7394d319aa3feb49db1452202336fb66fb6"
+		},
+		{
+			"ImportPath": "github.com/hoisie/redis",
+			"Rev": "788f01e396a99c96c8f56338383926f16841ebae"
 		},
 		{
 			"ImportPath": "github.com/martini-contrib/render",

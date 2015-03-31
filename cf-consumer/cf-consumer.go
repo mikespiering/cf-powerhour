@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/go-martini/martini"
+	"github.com/hoisie/redis"
 	"github.com/martini-contrib/render"
 	"github.com/streadway/amqp"
 
@@ -15,6 +16,7 @@ import (
 type Status struct {
 	InstanceProcessed int
 	InstanceIndex     int
+	TotalProcessed    int64
 	AMQP              bool
 	REDIS             bool
 }
@@ -73,6 +75,18 @@ func main() {
 		)
 		logOnError(err, "Failed to register a consumer")
 
+		services, err = appEnv.Services.WithTag("redis")
+		logOnError(err, "Unable to find bound CloudRedis service")
+		var client redis.Client
+		if err == nil {
+			// setup redis connection if found
+			status.REDIS = true
+			services, _ := appEnv.Services.WithTag("redis")
+			redis := services[0]
+			client.Addr = redis.Credentials["hostname"] + ":" + redis.Credentials["port"]
+			client.Password = redis.Credentials["password"]
+		}
+
 		// start the work
 		go func() {
 			for d := range msgs {
@@ -80,6 +94,9 @@ func main() {
 				d.Ack(false)
 				time.Sleep(100 * time.Millisecond)
 				status.InstanceProcessed++
+				if status.REDIS {
+					status.TotalProcessed, _ = client.Incr("totalProcessed")
+				}
 			}
 		}()
 	}
