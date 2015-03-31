@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/tracyde/powerhour/cf-producer",
+	"ImportPath": "github.com/tracyde/cf-powerhour/cf-producer",
 	"GoVersion": "go1.2.2",
 	"Deps": [
 		{

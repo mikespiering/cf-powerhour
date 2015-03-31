@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/go-martini/martini"
@@ -104,6 +105,10 @@ func main() {
 
 	m := martini.Classic()
 	m.Use(render.Renderer())
+
+	m.Get("/kill", func() {
+		os.Exit(1)
+	})
 
 	m.Get("/", func(r render.Render) {
 		r.HTML(200, "status", status)

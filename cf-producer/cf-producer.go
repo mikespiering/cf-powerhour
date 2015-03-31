@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -91,6 +92,10 @@ func main() {
 			publishMessage(ch, &status)
 		}
 		return "Published " + params["amount"] + " messages\n"
+	})
+
+	m.Get("/kill", func() {
+		os.Exit(1)
 	})
 
 	m.Get("/", func(r render.Render) {
