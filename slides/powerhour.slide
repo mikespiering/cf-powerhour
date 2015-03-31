@@ -1,0 +1,67 @@
+Producer/Consumer on Pivotal Cloud Foundry
+1 Apr 2015
+Tags: go, golang, pcf, cloudfoundry, pivotal
+
+Derek Tracy
+Systems Architect
+tracyde@gmail.com
+http://github.com/tracyde
+@derek_tracy
+
+* Agenda
+
+- Cloud Foundry Overview
+- Producer/Consumer Overview
+- Producer/Consumer Demo
+- Demo Walkthrough
+- Questions
+ 
+* What is Cloud Foundry
+
+Enterprise PaaS that provides
+
+- App Server and OS Configuration via Buildpacks
+- Application Containerization and Cluster Scheduling
+- Application to Service Binding and Access
+- Application Health Management and Load Balancing
+- Application Scaling
+- Application Logging and Metrics based Scaling
+
+* One picture is worth...
+
+.image cloud_foundry.jpg _ 900
+
+* Producer/Consumer Overview
+
+Producer/Consumer pattern has two main functions.
+
+*Producer*
+
+	The producer publishes data to a queue
+
+*Consumer*
+
+	The consumer reads data from the queue and processes it
+
+- Highly parallel and concurrent
+- Easily scalable
+- Very flexible
+
+* Producer/Consumer Overview
+
+.image producer_consumer_flowchart.jpg _ 1000
+
+* RabbitMQ
+
+- Fast OpenSource Message Queue
+- Supports AMQP, STOMP, MQTT
+
+* Redis
+
+- OpenSource NoSQL Key-Value Datastore
+- Has a lot of builtin atomic operations
+- Easily handles concurrent operations
+
+* Producer/Consumer Demo
+
+* Questions?
